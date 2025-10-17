@@ -72,64 +72,11 @@
       <button class="next" type="button" data-action="next-slide">&#10095;</button>
     </div>
 
-    <!-- Products -->
-    <section class="product-section" id="product-section">
-      <div class="section-header">
-        <h2 id="section-title">Sản phẩm mới</h2>
-        <a href="products.html">Xem tất cả</a>
-      </div>
+{% block content %} 
+        
+        
 
-      <div class="product-carousel">
-
-        <div class="product-list" id="product-list">
-
-          <!-- Card 1 -->
-          <div class="product-card" data-product-id="flip7" data-name="Samsung Galaxy Z Flip7" data-price="26990000">
-            <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
-
-            <a class="thumb-link" href="product-detail.html?id=flip7" data-action="open-detail">
-              <img src="https://samcenter.vn/images/thumbs/0014409_samsung-galaxy-z-flip7_420.jpeg"
-                alt="Samsung Galaxy Z Flip7">
-            </a>
-
-            <h3>
-              <a href="product-detail.html?id=flip7" data-action="open-detail">Samsung Galaxy Z Flip7</a>
-            </h3>
-
-            <p class="price-new">26.990.000₫</p>
-            <p class="price-old">28.990.000₫</p>
-
-            <div class="card-cta">
-              <button class="buy-btn" type="button" data-action="add-to-cart">
-                <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
-              </button>
-              <a class="buy-btn buy-now" href="product.html" data-action="buy-now">
-                Mua ngay
-              </a>
-            </div>
-          </div>
-
-        </div><!-- /product-list -->
-      </div><!-- /product-carousel -->
-    </section>
-    <!-- TEMPLATE: card sản phẩm (để JS render từ API) -->
-    <template id="tpl-product-card">
-      <div class="product-card" data-product-id="" data-name="" data-price="">
-        <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
-        <a class="thumb-link" href="#" data-action="open-detail">
-          <img src="" alt="">
-        </a>
-        <h3><a href="#" data-action="open-detail"></a></h3>
-        <p class="price-new"></p>
-        <p class="price-old"></p>
-        <div class="card-cta">
-          <button class="buy-btn" type="button" data-action="add-to-cart">
-            <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
-          </button>
-          <a class="buy-btn buy-now" href="#" data-action="buy-now">Mua ngay</a>
-        </div>
-      </div>
-    </template>
+{% endblock %}
 
   </main>
 
