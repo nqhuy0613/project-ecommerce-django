@@ -1,0 +1,102 @@
+{% include "store/base.html"%}
+
+{% load static %}
+
+{% comment %} {% load mathfilters %} {% endcomment %}
+
+
+{% block content %}
+
+
+  <section class="cart-page">
+    <div class="cart-container">
+      <div class="cart-breadcrumb">
+        <a class="muted-link" href="index.html">&lt; Về trang chủ</a>
+        <span style="color:#9ca3af">/</span>
+        <span>Giỏ hàng của bạn</span>
+      </div>
+
+      <div class="cart-grid">
+        <!-- LEFT -->
+        <div>
+          <!-- CART LIST -->
+          <div class="cart-card" id="cartCard">
+            <div class="cart-section-hd">Giỏ hàng</div>
+            <div class="cart-section-bd" id="cartList"></div>
+            <div class="cart-section-bd" id="cartTotals"></div>
+          </div>
+
+          <!-- CUSTOMER INFO -->
+          <div class="cart-card">
+            <div class="cart-section-hd">Thông tin khách hàng</div>
+            <div class="cart-section-bd">
+              <div class="cart-field"><i class="fa-regular fa-user"></i><input id="fullname" type="text"
+                  placeholder="Họ và tên"></div>
+              <div class="cart-field"><i class="fa-solid fa-phone"></i><input id="phone" type="tel"
+                  placeholder="Số điện thoại"></div>
+              <div style="font-size:13px;color:var(--muted)">Anh an – 0788055336 <a href="#" class="muted-link">Sửa</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- SHIPPING -->
+          <div class="cart-card">
+            <div class="cart-section-hd">Hình thức nhận hàng</div>
+            <div class="cart-section-bd">
+              <div class="cart-radio">
+                <label><input type="radio" name="ship" value="store" checked> Nhận tại cửa hàng</label>
+                <label><input type="radio" name="ship" value="home"> Giao tận nơi</label>
+              </div>
+
+              <!-- CỬA HÀNG -->
+              <div id="cart-store" class="cart-store">
+                <strong>SAMCENTER NDH1</strong>
+                <div style="color:#6b7280;font-size:14px">184 Trần Hưng Đạo ND</div>
+                <a href="#" class="muted-link" style="display:inline-block;margin-top:6px">Thêm địa chỉ khác</a>
+              </div>
+
+              <!-- GIAO TẬN NƠI -->
+              <div id="cart-delivery" class="cart-delivery hide">
+                <div class="cart-delivery-row">
+                  <select id="province" class="cart-select">
+                    <option value="">Chọn Tỉnh/TP</option>
+                    <option value="ND">Nam Định</option>
+                    <option value="HCM">TP. Hồ Chí Minh</option>
+                    <option value="HN">Hà Nội</option>
+                  </select>
+                  <select id="district" class="cart-select" disabled>
+                    <option value="">Mời bạn chọn quận/huyện</option>
+                  </select>
+                </div>
+                <input id="address" class="cart-address" type="text" placeholder="Địa chỉ cụ thể">
+              </div>
+
+              <label style="display:flex;gap:8px;align-items:center;margin-top:10px">
+                <input type="checkbox" id="company-invoice"> Xuất hoá đơn công ty
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <aside class="cart-summary">
+          <div class="cart-card">
+            <div class="cart-section-hd">Tóm tắt đơn hàng</div>
+            <div class="cart-section-bd">
+              <div class="cart-totals">
+                <div class="cart-total-row"><span>Tạm tính</span><strong id="sum-sub">0₫</strong></div>
+                <div class="cart-total-row"><span>Khuyến mãi</span><span id="sum-discount">0₫</span></div>
+                <div class="cart-total-row"><span>Phí vận chuyển</span><span id="sum-ship">0₫</span></div>
+                <div class="cart-total-row cart-grand"><span>Tổng cộng</span><span id="sum-grand">0₫</span></div>
+              </div>
+              <button class="cart-btn" style="margin-top:14px">Thanh toán</button>
+              <div style="margin-top:8px;text-align:center;color:#6b7280;font-size:13px">
+                Bằng cách tiếp tục, bạn đồng ý với điều khoản mua hàng
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+{% endblock %}

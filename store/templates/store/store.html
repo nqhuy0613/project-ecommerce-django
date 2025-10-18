@@ -5,6 +5,16 @@
 
 {% block content %}
 
+  <!-- Carousel -->
+    <div class="carousel" id="home-carousel" data-carousel>
+      <img src="https://samcenter.vn/images/uploaded/banner/2025/banner-s25fe-pc.png" class="active" alt="Banner 1">
+      <img src="https://samcenter.vn/images/uploaded/banner/2025/Th%C3%A1ng%209/Artboard%201.png" alt="Banner 2">
+      <img src="https://samcenter.vn/images/uploaded/banner/2025/Th%C3%A1ng%209/Artboard%201%20copy.png" alt="Banner 3">
+
+      <button class="prev" type="button" data-action="prev-slide">&#10094;</button>
+      <button class="next" type="button" data-action="next-slide">&#10095;</button>
+    </div>
+
     <!-- Products -->
     <section class="product-section" id="product-section">
       <div class="section-header">
@@ -63,6 +73,70 @@
         </div>
       </div>
     </template>
+
+      <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col about">
+        <h4>SAMSUNG</h4>
+        <p>
+          Từ tháng 01/2022, SamCenter – chính thức là đại lý ủy quyền SamSung tại Việt Nam.
+          Trở thành đối tác với SamSung giúp SamCenter giữ vững cam kết luôn đem lại giá trị tốt nhất
+          cho người dùng sản phẩm SamSung tại Việt Nam.
+        </p>
+        <p>
+          Toàn bộ sản phẩm SamSung và nhiều sản phẩm phụ kiện đều là hàng chính hãng được phân phối
+          thông qua công ty Samsung Việt Nam, bảo hành tại các trung tâm ủy quyền tại Việt Nam
+          trong thời gian 12 tháng đi kèm với mức giá tốt nhất thị trường từ SamCenter.
+        </p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#"><i class="fa-brands fa-zalo"></i></a>
+        </div>
+        <p class="copyright">
+          © 2016 Công ty Cổ Phần HESMAN Việt Nam GPDKKD: 0107465657 do Sở KH & ĐT TP. Hà Nội cấp ngày 08/06/2016. <br>
+          Địa chỉ: Số 76 Thái Hà, phường Trung Liệt, quận Đống Đa, thành phố Hà Nội, Việt Nam. <br>
+          Đại diện pháp luật: PHẠM MẠNH HÒA | Email: lienhe@samcenter.vn
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Về SamCenter</h5>
+        <ul>
+          <li><a href="#">Tin Tức</a></li>
+          <li><a href="#">Giới thiệu</a></li>
+          <li><a href="#">Phương thức thanh toán</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Hỗ trợ khách hàng</h5>
+        <ul>
+          <li><a href="#">Chính sách bảo mật</a></li>
+          <li><a href="#">Chính sách hoạt động chung</a></li>
+          <li><a href="#">Chính sách trả góp</a></li>
+          <li><a href="#">Chính sách giao hàng</a></li>
+          <li><a href="#">Chính sách bảo hành và đổi trả</a></li>
+          <li><a href="#">Hướng dẫn thanh toán</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col contact">
+        <h5>Liên hệ</h5>
+        <p>Hotline: 1800 4886 (8h00 – 22h00)</p>
+        <p>Email: lienhe@samcenter.vn</p>
+        <h5>Đăng ký nhận tin</h5>
+        <p>Nhập thông tin sản phẩm mới và chương trình khuyến mại của SamCenter</p>
+        <div class="subscribe">
+          <input id="subscribe-email" type="email" placeholder="Email của bạn">
+          <button type="button" data-action="subscribe">
+            <i class="fa-solid fa-paper-plane"></i> Đăng ký
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 
 {% endblock %}    
