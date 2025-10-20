@@ -1,24 +1,24 @@
 // --- JS nút search (chỉ gắn khi có đủ phần tử) ---==============================================
 const searchBtn = document.getElementById("search-btn");
 const searchBox = document.getElementById("search-box");
-const overlay   = document.getElementById("overlay");
+const overlay = document.getElementById("overlay");
 
 if (searchBtn && searchBox && overlay) {
   searchBtn.addEventListener("click", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const open = searchBox.style.display === "block";
     searchBox.style.display = open ? "none" : "block";
-    overlay.style.display   = open ? "none" : "block";
+    overlay.style.display = open ? "none" : "block";
   });
 
   overlay.addEventListener("click", () => {
     searchBox.style.display = "none";
-    overlay.style.display   = "none";
+    overlay.style.display = "none";
   });
 }
 
 // --- Carousel (chỉ chạy khi có đủ phần tử & slide) ---
-const slides  = document.querySelectorAll(".carousel img");
+const slides = document.querySelectorAll(".carousel img");
 const prevBtn = document.querySelector(".prev");
 const nextBtn = document.querySelector(".next");
 let slideIndex = 0;
@@ -59,7 +59,7 @@ if (slides.length > 0) {
 // ---------------- Trang đăng ký (giữ nguyên phần đã có) ----------------========================
 document.addEventListener('DOMContentLoaded', () => {
   // Toggle mắt
-  function togglePwd(id, el){
+  function togglePwd(id, el) {
     const inp = document.getElementById(id);
     if (!inp) return;
     const hide = inp.type === 'password';
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('signupForm');
   const pwd1 = document.getElementById('pwd1');
   const pwd2 = document.getElementById('pwd2');
-  const msg  = document.getElementById('pwdMsg');
+  const msg = document.getElementById('pwdMsg');
   // Kiểm tra email đúng định dạng
   // --- Kiểm tra email hợp lệ ---
   const emailInput = document.querySelector('input[type="email"]');
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   pwd2.addEventListener('input', setPwValidity);
 
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setPwValidity();
 
     if (form.checkValidity()) {
