@@ -1,0 +1,80 @@
+{% include "store/base.html"%}
+ {% load static %}
+  {% load mathfilters %}
+   {% block content %}
+<style>
+    .forgot.password a,
+    .signup a {
+      display: inline-block;
+      font-size: 16px; 
+      color: #007bff;  
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .forgot.password a:hover,
+    .signup a:hover {
+      text-decoration: underline;
+    }
+
+    .forgot.password,
+    .signup {
+      text-align: center;
+      margin-top: 10px;
+    }
+</style>
+
+  <div class="page">
+    <div class="card">
+      <div class="left">
+        <div class="illustration">
+          <i class="fa-solid fa-desktop"></i>
+        </div>
+      </div>
+
+      <div class="right">
+        <h1 class="title">Member Login</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+
+            <div class="field">
+              <i class="fa-solid fa-lock"></i>
+              <input
+                id="pwd"
+                type="password"
+                name="password"
+                placeholder="Confirm Password"
+                required
+              />
+              <button type="button" class="show" onclick="togglePwd('pwd', this)">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+
+            <button class="btn" type="submit">LOGIN</button>
+        </form>
+
+        <br>
+
+        {{form.non_field_errors}}
+
+        
+
+        <div class="forgot password">
+          <a href="{% url 'reset_password' %}">Forgotten your password?→ </a>
+        </div>
+
+
+        <div class="signup">
+          <a href="{% url 'register' %}">Create your Account →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

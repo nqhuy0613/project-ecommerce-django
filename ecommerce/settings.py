@@ -141,3 +141,15 @@ MEDIA_ROOT = BASE_DIR / 'static/media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email configuration settings:
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = '587'
+# EMAIL_USE_TLS = 'True'
+
+# # Be sure to read the guide in the resources folder of this lecture (SETUP THE EMAIL BACKEND)
+
+# EMAIL_HOST_USER = '' # - Enter your GMAIL address # The host email that sends password reset emails
+# EMAIL_HOST_PASSWORD = '' # - Enter your app password 
