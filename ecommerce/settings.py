@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     'account',
 
+    'payment',
+
     'mathfilters',
 
     'crispy_forms', # Crispy forms
