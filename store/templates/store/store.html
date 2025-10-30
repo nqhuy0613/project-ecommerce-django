@@ -5,6 +5,51 @@
 
 {% block content %}
 
+  <style>
+    /* Make product list horizontal and images look better */
+    .product-list {
+      display: flex;
+      /* allow wrapping so cards move to next row when container is full */
+      flex-wrap: wrap;
+      gap: 16px;
+      overflow-x: visible;
+      padding-bottom: 6px;
+    }
+
+    .product-card {
+      /* allow cards to shrink/grow; use a preferred base width so multiple cards fit per row
+         they'll wrap automatically when there isn't enough space */
+      flex: 1 1 240px;
+      max-width: 240px;
+      margin: 0;
+    }
+
+    .product-card .thumb-link {
+      display: block;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .product-card .thumb-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .25s ease;
+    }
+
+    .product-card .thumb-link img:hover {
+      transform: scale(1.04);
+    }
+
+    /* hide scrollbar on WebKit but keep scrolling functionality */
+    .product-list::-webkit-scrollbar { height: 8px; }
+    .product-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 8px; }
+  </style>
+
   <!-- Carousel -->
     <div class="carousel" id="home-carousel" data-carousel>
       <img src="https://samcenter.vn/images/uploaded/banner/2025/banner-s25fe-pc.png" class="active" alt="Banner 1">
@@ -14,65 +59,105 @@
       <button class="prev" type="button" data-action="prev-slide">&#10094;</button>
       <button class="next" type="button" data-action="next-slide">&#10095;</button>
     </div>
+    
+    <!-- Products: three groups (Samsung Galaxy, Galaxy Watch, Galaxy Tab) -->
 
-    <!-- Products -->
-    <section class="product-section" id="product-section">
+  {% comment %} Helper block for rendering a product section filtered by category name {% endcomment %}
+
+    <!-- Section: Samsung Galaxy -->
+    <section class="product-section" id="product-section-galaxy">
       <div class="section-header">
-        <h2 id="section-title">Sản phẩm mới</h2>
-        <a href="products.html">Xem tất cả</a>
+        <h2 id="section-title">Samsung Galaxy</h2>
+        <a href="/search/samsung-galaxy">Xem tất cả</a>
       </div>
-
       <div class="product-carousel">
-
-        <div class="product-list" id="product-list">
-
-          <!-- Card 1 -->
-          <div class="product-card" data-product-id="flip7" data-name="Samsung Galaxy Z Flip7" data-price="26990000">
-            <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
-
-            <a class="thumb-link" href="{{product.get_absolute_url}}" >
-              <img src="https://samcenter.vn/images/thumbs/0014409_samsung-galaxy-z-flip7_420.jpeg"
-                alt="Samsung Galaxy Z Flip7">
-            </a>
-
-            <h3>
-              <a href="{{product.get_absolute_url}}" >Samsung Galaxy Z Flip7</a>
-            </h3>
-
-            <p class="price-new">26.990.000₫</p>
-            <p class="price-old">28.990.000₫</p>
-
-            <div class="card-cta">
-              <button class="buy-btn" type="button" data-action="add-to-cart">
-                <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
-              </button>
-              <a class="buy-btn buy-now" href="product.html" data-action="buy-now">
-                Mua ngay
-              </a>
-            </div>
-          </div>
-
-        </div><!-- /product-list -->
-      </div><!-- /product-carousel -->
-    </section>
-    <!-- TEMPLATE: card sản phẩm (để JS render từ API) -->
-    <template id="tpl-product-card">
-      <div class="product-card" data-product-id="" data-name="" data-price="">
-        <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
-        <a class="thumb-link" href="#" data-action="open-detail">
-          <img src="" alt="">
-        </a>
-        <h3><a href="#" data-action="open-detail"></a></h3>
-        <p class="price-new"></p>
-        <p class="price-old"></p>
-        <div class="card-cta">
-          <button class="buy-btn" type="button" data-action="add-to-cart">
-            <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
-          </button>
-          <a class="buy-btn buy-now" href="#" data-action="buy-now">Mua ngay</a>
+        <div class="product-list" id="product-list-galaxy">
+          {% for product in my_products %}
+            {% if product.category and product.category.name|lower == 'samsung galaxy' %}
+              <div class="product-card">
+                <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
+                <a class="thumb-link" href="{{ product.get_absolute_url }}">
+                  {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                  {% else %}
+                    <img src="/static/media/images/placeholder.png" alt="{{ product.title }}">
+                  {% endif %}
+                </a>
+                <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+                <p class="price-new">{{ product.price }}</p>
+                <div class="card-cta">
+                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
-    </template>
+    </section>
+
+    <!-- Section: Galaxy Watch -->
+    <section class="product-section" id="product-section-watch">
+      <div class="section-header">
+        <h2 id="section-title">Galaxy Watch</h2>
+        <a href="/search/galaxy-watch">Xem tất cả</a>
+      </div>
+      <div class="product-carousel">
+        <div class="product-list" id="product-list-watch">
+          {% for product in my_products %}
+            {% if product.category and product.category.name|lower == 'galaxy watch' %}
+              <div class="product-card">
+                <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
+                <a class="thumb-link" href="{{ product.get_absolute_url }}">
+                  {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                  {% else %}
+                    <img src="/static/media/images/placeholder.png" alt="{{ product.title }}">
+                  {% endif %}
+                </a>
+                <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+                <p class="price-new">{{ product.price }}</p>
+                <div class="card-cta">
+                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Galaxy Tab -->
+    <section class="product-section" id="product-section-tab">
+      <div class="section-header">
+        <h2 id="section-title">Galaxy Tab</h2>
+        <a href="/search/galaxy-tab">Xem tất cả</a>
+      </div>
+      <div class="product-carousel">
+        <div class="product-list" id="product-list-tab">
+          {% for product in my_products %}
+            {% if product.category and product.category.name|lower == 'galaxy tab' %}
+              <div class="product-card">
+                <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
+                <a class="thumb-link" href="{{ product.get_absolute_url }}">
+                  {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                  {% else %}
+                    <img src="/static/media/images/placeholder.png" alt="{{ product.title }}">
+                  {% endif %}
+                </a>
+                <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+                <p class="price-new">{{ product.price }}</p>
+                <div class="card-cta">
+                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    
+    
 
       <!-- Footer -->
   <footer class="footer">

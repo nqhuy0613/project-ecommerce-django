@@ -7,11 +7,32 @@
 
 {% block content %}
 
+<style>
+  /* Slightly enlarge cart area while keeping proportions */
+  .cart-container {
+    transform: scale(1.06);
+    transform-origin: top center;
+  }
+
+  /* Disable scaling on small screens to avoid overflow */
+  @media (max-width: 980px) {
+    .cart-container { transform: none; }
+  }
+  /* Make update and delete buttons equal size */
+  .cart-actions-equal .update-button,
+  .cart-actions-equal .delete-button {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    min-width: 78px;
+    box-sizing: border-box;
+  }
+</style>
+
 
   <section class="cart-page">
     <div class="cart-container">
       <div class="cart-breadcrumb">
-        <a class="muted-link" href="index.html">&lt; Về trang chủ</a>
+        <a class="muted-link" href="{% url 'store' %}">&lt; Về trang chủ</a>
         <span style="color:#9ca3af">/</span>
         <span>Giỏ hàng của bạn</span>
       </div>
@@ -22,60 +43,49 @@
           <!-- CART LIST -->
           <div class="cart-card" id="cartCard">
             <div class="cart-section-hd">Giỏ hàng</div>
-            <div class="cart-section-bd" id="cartList"></div>
-            <div class="cart-section-bd" id="cartTotals"></div>
-          </div>
+            <div class="cart-section-bd" id="cartList">
+              {% if cart|length > 0 %}
+                {% for item in cart %}
+                  <div class="cart-item" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid #eee;">
 
-          <!-- CUSTOMER INFO -->
-          <div class="cart-card">
-            <div class="cart-section-hd">Thông tin khách hàng</div>
-            <div class="cart-section-bd">
-              <div class="cart-field"><i class="fa-regular fa-user"></i><input id="fullname" type="text"
-                  placeholder="Họ và tên"></div>
-              <div class="cart-field"><i class="fa-solid fa-phone"></i><input id="phone" type="tel"
-                  placeholder="Số điện thoại"></div>
-              <div style="font-size:13px;color:var(--muted)">Anh an – 0788055336 <a href="#" class="muted-link">Sửa</a>
-              </div>
+                    <div style="width:96px;flex:0 0 96px;">
+                      {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" style="width:96px;height:96px;object-fit:cover;border-radius:6px;" />
+                      {% else %}
+                        <div style="width:96px;height:96px;background:#f3f3f3;border-radius:6px"></div>
+                      {% endif %}
+                    </div>
+                    <div style="flex:1">
+                      <a href="{{ item.product.get_absolute_url }}" style="font-weight:600;color:#111;text-decoration:none">{{ item.product.title }}</a>
+                      <div style="font-size:13px;color:#6b7280;margin-top:6px">Giá: {{ item.price }} × {{ item.qty }}</div>
+                      <div style="margin-top:6px;font-weight:600">Tổng: {{ item.total }}</div>
+                    </div>
+    <!-- added wrapper class to apply equal button sizing -->
+    <div class="cart-actions-equal" style="display:flex;flex-direction:column;align-items:flex-end;min-width:120px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                    <label for="select{{item.product.id}}" style="margin:0;font-size:13px;">Số lượng</label>
+                    <select id="select{{item.product.id}}" style="width:72px;padding:4px;border-radius:4px;">
+                      <option value="{{item.qty}}" selected>{{item.qty}}</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                    </select>
+                    <button type="button" data-index="{{item.product.id}}" class="btn btn-primary btn-sm update-button" style="padding:4px 8px;font-size:12px;">Update</button>
+                  </div>
+                  <button type="button" data-index="{{item.product.id}}" class="btn btn-danger btn-sm delete-button">Delete</button>
+                </div> <!-- đóng div phần nút -->
+</div> <!-- đóng div.cart-item -->
+{% endfor %}
+
+              {% else %}
+                <div style="padding:16px;color:#6b7280">Giỏ hàng của bạn đang trống.</div>
+              {% endif %}
             </div>
+            <!-- removed extra totals: left column now only shows products and quantities -->
           </div>
 
-          <!-- SHIPPING -->
-          <div class="cart-card">
-            <div class="cart-section-hd">Hình thức nhận hàng</div>
-            <div class="cart-section-bd">
-              <div class="cart-radio">
-                <label><input type="radio" name="ship" value="store" checked> Nhận tại cửa hàng</label>
-                <label><input type="radio" name="ship" value="home"> Giao tận nơi</label>
-              </div>
-
-              <!-- CỬA HÀNG -->
-              <div id="cart-store" class="cart-store">
-                <strong>SAMCENTER NDH1</strong>
-                <div style="color:#6b7280;font-size:14px">184 Trần Hưng Đạo ND</div>
-                <a href="#" class="muted-link" style="display:inline-block;margin-top:6px">Thêm địa chỉ khác</a>
-              </div>
-
-              <!-- GIAO TẬN NƠI -->
-              <div id="cart-delivery" class="cart-delivery hide">
-                <div class="cart-delivery-row">
-                  <select id="province" class="cart-select">
-                    <option value="">Chọn Tỉnh/TP</option>
-                    <option value="ND">Nam Định</option>
-                    <option value="HCM">TP. Hồ Chí Minh</option>
-                    <option value="HN">Hà Nội</option>
-                  </select>
-                  <select id="district" class="cart-select" disabled>
-                    <option value="">Mời bạn chọn quận/huyện</option>
-                  </select>
-                </div>
-                <input id="address" class="cart-address" type="text" placeholder="Địa chỉ cụ thể">
-              </div>
-
-              <label style="display:flex;gap:8px;align-items:center;margin-top:10px">
-                <input type="checkbox" id="company-invoice"> Xuất hoá đơn công ty
-              </label>
-            </div>
-          </div>
+          <!-- removed customer info and shipping sections per request -->
         </div>
 
         <!-- RIGHT -->
@@ -83,20 +93,110 @@
           <div class="cart-card">
             <div class="cart-section-hd">Tóm tắt đơn hàng</div>
             <div class="cart-section-bd">
-              <div class="cart-totals">
-                <div class="cart-total-row"><span>Tạm tính</span><strong id="sum-sub">0₫</strong></div>
-                <div class="cart-total-row"><span>Khuyến mãi</span><span id="sum-discount">0₫</span></div>
-                <div class="cart-total-row"><span>Phí vận chuyển</span><span id="sum-ship">0₫</span></div>
-                <div class="cart-total-row cart-grand"><span>Tổng cộng</span><span id="sum-grand">0₫</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;font-weight:700"><span>Tổng cộng</span><span id="sum-grand">{{ cart.get_total }}</span></div>
               </div>
-              <button class="cart-btn" style="margin-top:14px">Thanh toán</button>
-              <div style="margin-top:8px;text-align:center;color:#6b7280;font-size:13px">
-                Bằng cách tiếp tục, bạn đồng ý với điều khoản mua hàng
-              </div>
+              <button class="cart-btn" style="margin-top:14px">
+                  <a href="{% url 'checkout' %}" style="color:white; text-decoration:none;">Thanh toán</a>
+              </button>
             </div>
           </div>
         </aside>
       </div>
     </div>
   </section>
+
+  <script>
+
+  // Delete button
+
+    $(document).on('click', '.delete-button', function(e){
+
+      e.preventDefault();
+
+      $.ajax({
+
+          type: 'POST',
+          url: '{% url "cart-delete" %}',
+          data: {
+
+              product_id: $(this).data('index'),
+              csrfmiddlewaretoken: "{{csrf_token}}",
+              action: 'post'
+
+          },
+
+          success: function(json){
+
+              //console.log(json)
+
+              location.reload(true);
+              
+
+              document.getElementById("cart-qty").textContent = json.qty
+
+              document.getElementById("total").textContent = json.total
+
+
+          },
+
+          error: function(xhr, errmsg, err){
+
+
+          }
+
+      });
+
+
+  })
+
+
+  // Update button
+
+  $(document).on('click', '.update-button', function(e){
+
+    e.preventDefault();
+
+    var theproductid = $(this).data('index');
+
+    $.ajax({
+
+        type: 'POST',
+        url: '{% url "cart-update" %}',
+        data: {
+
+            product_id: $(this).data('index'),
+            product_quantity: $('#select' + theproductid + ' option:selected').text(),
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'post'
+
+        },
+
+        success: function(json){
+
+            //console.log(json)
+
+            location.reload(true);
+            
+
+            document.getElementById("cart-qty").textContent = json.qty
+
+            document.getElementById("total").textContent = json.total
+
+
+        },
+
+        error: function(xhr, errmsg, err){
+
+
+        }
+
+    });
+
+
+})
+
+
+
+ </script>
 {% endblock %}

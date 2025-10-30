@@ -8,11 +8,13 @@
 
 <!-- Breadcrumb -->
   <nav class="breadcrumb">
-    <a href="index.html">Trang chủ</a>
+    <a href="/">Trang chủ</a>
     <span>›</span>
-    <a href="#">Samsung Galaxy</a>
-    <span>›</span>
-    <span class="current">Samsung Galaxy Z Flip7</span>
+    {% if product.category %}
+      <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+      <span>›</span>
+    {% endif %}
+    <span class="current">{{ product.title }}</span>
   </nav>
 
   <!-- PRODUCT DETAIL -->
@@ -20,85 +22,90 @@
     <!-- LEFT: Gallery -->
     <section class="pd-gallery">
       <div class="pd-main-img">
-        <img src="https://samcenter.vn/images/thumbs/0014409_samsung-galaxy-z-flip7_420.jpeg"
-          alt="Samsung Galaxy Z Flip7" id="pd-main-img">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.title }}" id="pd-main-img">
+        {% else %}
+          <img src="/static/media/images/placeholder.png" alt="{{ product.title }}" id="pd-main-img">
+        {% endif %}
       </div>
 
+      {% if product.image %}
       <div class="pd-thumbs" id="pd-thumbs">
         <button class="thumb is-active" type="button">
-          <img src="https://samcenter.vn/images/thumbs/0014409_samsung-galaxy-z-flip7_420.jpeg"
-            data-large="https://samcenter.vn/images/thumbs/0014409_samsung-galaxy-z-flip7_1024.jpeg"
-            alt="Z Flip7 góc 1">
-        </button>
-        <button class="thumb" type="button">
-          <img src="https://samcenter.vn/images/thumbs/0014411_samsung-galaxy-z-fold7_420.jpeg"
-            data-large="https://samcenter.vn/images/thumbs/0014411_samsung-galaxy-z-fold7_1024.jpeg"
-            alt="Z Fold7 góc 2">
-        </button>
-        <button class="thumb" type="button">
-          <img src="https://samcenter.vn/images/thumbs/0015055_samsung-galaxy-a17-5g_420.png"
-            data-large="https://samcenter.vn/images/thumbs/0015055_samsung-galaxy-a17-5g_1024.png" alt="A17 5G góc 3">
+          <img src="{{ product.image.url }}" data-large="{{ product.image.url }}" alt="{{ product.title }}">
         </button>
       </div>
+      {% endif %}
 
     </section>
 
     <!-- RIGHT: Info -->
     <section class="pd-info">
-      <h1 class="pd-title">Samsung Galaxy Z Flip7</h1>
+  <h1 class="pd-title">{{ product.title }}</h1>
 
       <div class="pd-row">
         <div class="pd-label">Màu sắc:</div>
         <div class="pd-colors">
-          <label class="color-chip">
-            <input type="radio" name="color" checked>
-            <span class="dot" style="--c:#cfd3d8"></span>
-            <span class="color-name">Bạc</span>
-          </label>
-          <label class="color-chip">
-            <input type="radio" name="color">
-            <span class="dot" style="--c:#111"></span>
-            <span class="color-name">Đen</span>
-          </label>
+          {% if product.colors %}
+            {% for c in product.colors %}
+              <label class="color-chip">
+                <input type="radio" name="color" {% if forloop.first %}checked{% endif %}>
+                <span class="dot" style="--c:{{ c.hex|default:'#ccc' }}"></span>
+                <span class="color-name">{{ c.name }}</span>
+              </label>
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
 
       <div class="pd-price">
-        <div class="price">26.990.000₫</div>
-        <div class="price-note">(Giá đã bao gồm VAT)</div>
+        <div class="price">{% if product.price %}{{ product.price }}{% endif %}</div>
+        <div class="price-note">{% if product.price %}(Giá đã bao gồm VAT){% endif %}</div>
       </div>
 
-      <div class="pd-benefits">
-        <div class="benefit-title"><i class="fa-solid fa-gift"></i> Ưu đãi</div>
-        <ul class="benefit-list">
-          <li>Giảm 500.000đ khi thanh toán online</li>
-          <li>Trả góp 0% qua thẻ tín dụng</li>
-          <li>Tặng bao da chính hãng</li>
-        </ul>
-        <a href="#" class="store-link">Xem cửa hàng có sẵn sản phẩm</a>
-      </div>
+      
 
-      <!-- CTA: bọc bằng .product-card + data-* để cart.js đọc -->
-      <div class="pd-cta product-card" data-product-id="flip7" data-name="Samsung Galaxy Z Flip7" data-price="26990000">
+      <div class="col">
+              
+                        <div class="row p-3">
+              
+                            <div class="col-6">
+              
+                               
+                                <label for="select">Số lượng</label>
+                                
+                                &nbsp; 
+                               
+                                <select id="select">
+              
+                                    <option value="1">1</option>
+              
+                                    <option value="2">2</option>
+              
+                                    <option value="3">3</option>
+              
+                                    <option value="4">4</option>
+              
+                                </select>
 
-        <button class="btn btn-outline btn-block py-3" type="button" data-action="add-to-cart">
-          <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
-        </button>
+                            </div>
 
-        <a class="btn btn-primary btn-block mt-3 py-3" href="cart.html" data-action="buy-now">
-          <i class="fa-solid fa-bag-shopping"></i> Mua ngay
-        </a>
-      </div>
+                            <div class="col-6 text-end">
+                                
+                                <button type="button" id="add-button" value="{{product.id}}" class="btn btn-secondary btn-sm">
+                        
+                                    <i class="fa fa-plus" aria-hidden="true"></i> &nbsp; Thêm vào giỏ hàng 
+                            
+                                </button> 
+                            
 
-      <div class="pd-policies">
-        <h4>Chính sách sản phẩm</h4>
-        <ul>
-          <li><i class="fa-solid fa-rotate-left"></i> Lỗi là đổi máy trong 30 ngày tại các cửa hàng toàn quốc</li>
-          <li><i class="fa-solid fa-truck-fast"></i> Ship hàng siêu tốc toàn quốc <strong>1800.4886</strong></li>
-          <li><i class="fa-solid fa-shield-heart"></i> Bảo hành chính hãng 1 năm tại các trung tâm bảo hành</li>
-          <li><i class="fa-solid fa-box"></i> Bộ sản phẩm gồm: Hộp, Sách hướng dẫn, Cáp</li>
-        </ul>
-      </div>
+                            </div>
+                        
+                        </div>
+
+                    </div>
+
+      
     </section>
   </main>
 
@@ -113,15 +120,73 @@
     <div class="pd-panels">
       <div id="panel-info" class="pd-panel">
         <div class="pd-desc">
-          <p>(Fallback) Mô tả ngắn…</p>
+          {% if product.description %}
+            <p>{{ product.description }}</p>
+          {% endif %}
         </div>
       </div>
       <div id="panel-specs" class="pd-panel">
-        <ul class="specs">
-          <li><span class="k">Màn hình</span><span class="v">AMOLED 6.7"</span></li>
-        </ul>
+        {% if product.pin or product.ram or product.screen_size %}
+          <ul class="specs">
+            {% if product.pin %}
+              <li><span class="k">Pin</span><span class="v">{{ product.pin }}</span></li>
+            {% endif %}
+            {% if product.ram %}
+              <li><span class="k">RAM</span><span class="v">{{ product.ram }}</span></li>
+            {% endif %}
+            {% if product.screen_size %}
+              <li><span class="k">Màn hình</span><span class="v">{{ product.screen_size }}</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
       </div>
     </div>
   </section>
+
+  <script>
+
+    // Add button
+
+    $(document).on('click', '#add-button', function(e){
+
+        e.preventDefault();
+
+        $.ajax({
+
+            type: 'POST',
+            url: '{% url "cart-add" %}',
+            data: {
+
+                product_id: $('#add-button').val(),
+                product_quantity: $('#select option:selected').text(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+
+            },
+
+            success: function(json){
+
+                //console.log(json)
+
+                document.getElementById("cart-qty").textContent = json.qty
+
+
+            },
+
+            error: function(xhr, errmsg, err){
+
+
+            }
+
+        });
+
+
+    })
+
+
+
+
+</script>
+
 
   {% endblock %}    

@@ -36,13 +36,19 @@ class Product(models.Model):
 
     title = models.CharField(max_length=250)
 
-    brand = models.CharField(max_length=250, default='un-branded')
+    color = models.CharField(max_length=250, default='Unknown')
 
     description = models.TextField(blank=True)
 
     slug = models.SlugField(max_length=255)
 
-    price = models.DecimalField(max_digits=4, decimal_places=2)
+    price = models.BigIntegerField()
+
+    screen_size = models.CharField(max_length=250, default='Unknown')
+
+    ram = models.CharField(max_length=250, default='Unknown')
+
+    pin = models.CharField(max_length=250, default='Unknown')
 
     image = models.ImageField(upload_to='images/')
 
