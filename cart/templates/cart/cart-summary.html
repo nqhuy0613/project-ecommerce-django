@@ -66,10 +66,11 @@
                     <label for="select{{item.product.id}}" style="margin:0;font-size:13px;">Số lượng</label>
                     <select id="select{{item.product.id}}" style="width:72px;padding:4px;border-radius:4px;">
                       <option value="{{item.qty}}" selected>{{item.qty}}</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
+                        {% for i in numbers %}
+              
+                          <option value="{{i}}">{{i}}</option>
+              
+                        {% endfor %}
                     </select>
                     <button type="button" data-index="{{item.product.id}}" class="btn btn-primary btn-sm update-button" style="padding:4px 8px;font-size:12px;">Update</button>
                   </div>
@@ -97,7 +98,7 @@
                 <div style="display:flex;justify-content:space-between;font-weight:700"><span>Tổng cộng</span><span id="sum-grand">{{ cart.get_total }}</span></div>
               </div>
               <button class="cart-btn" style="margin-top:14px">
-                  <a href="{% url 'checkout' %}" style="color:white; text-decoration:none;">Thanh toán</a>
+                  {%if cart.get_total > 0%}<a href="{% url 'checkout' %}" style="color:white; text-decoration:none;">Thanh toán</a>{% else %}<span style="color:white; text-decoration:none;">Hãy thêm sản phẩm vào giỏ hàng!!!</span>{% endif %}
               </button>
             </div>
           </div>

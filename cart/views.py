@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 def cart_summary(request):
     cart = Cart(request)
-    return render(request, "cart/cart-summary.html", {'cart':cart})
+    return render(request, "cart/cart-summary.html", {'cart':cart, "numbers": range(1, 101)})
 
 def cart_add(request):
     cart = Cart(request)

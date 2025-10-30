@@ -38,7 +38,7 @@ def product_info(request, product_slug):
 
     product = get_object_or_404(Product, slug=product_slug)
 
-    context = {'product': product}
+    context = {'product': product, "numbers": range(1, 101)}
 
     return render(request, 'store/product-info.html', context)
 
