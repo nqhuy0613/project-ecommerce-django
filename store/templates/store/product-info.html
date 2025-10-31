@@ -43,23 +43,13 @@
     <section class="pd-info">
   <h1 class="pd-title">{{ product.title }}</h1>
 
-      <div class="pd-row">
-        <div class="pd-label">Màu sắc:</div>
-        <div class="pd-colors">
-          {% if product.colors %}
-            {% for c in product.colors %}
-              <label class="color-chip">
-                <input type="radio" name="color" {% if forloop.first %}checked{% endif %}>
-                <span class="dot" style="--c:{{ c.hex|default:'#ccc' }}"></span>
-                <span class="color-name">{{ c.name }}</span>
-              </label>
-            {% endfor %}
-          {% endif %}
-        </div>
-      </div>
+<div class="d-flex align-items-center mb-1">
+  <div class="fw-semibold me-1">Màu sắc: </div>
+  <span>&nbsp {{ product.color }}</span>
+</div>
 
       <div class="pd-price">
-        <div class="price">{% if product.price %}{{ product.price }}{% endif %}</div>
+        <div class="price">{% if product.price %}{{ product.price }} VND{% endif %}</div>
         <div class="price-note">{% if product.price %}(Giá đã bao gồm VAT){% endif %}</div>
       </div>
 
