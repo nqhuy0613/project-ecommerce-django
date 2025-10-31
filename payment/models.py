@@ -64,7 +64,7 @@ class Order(models.Model):
         ('Đang xử lý', 'Đang xử lý'),
         ('Thành công', 'Thành công'),
     ],
-    default='Chưa thanh toán'
+    default='Đang xử lý'
 )
 
     date_ordered = models.DateTimeField(auto_now_add=True)
