@@ -109,9 +109,11 @@ class DailyRevenue(models.Model):
     total_revenue = models.BigIntegerField(default=0)
 
     class Meta:
-        db_table = 'daily_revenue'  # đảm bảo tên bảng trùng với MySQL trigger/procedure
-        verbose_name = 'Doanh thu ngày'
-        verbose_name_plural = 'Doanh thu theo ngày'
+        db_table = 'daily_revenue'  
+
 
     def __str__(self):
         return f"{self.date}"
+    
+
+

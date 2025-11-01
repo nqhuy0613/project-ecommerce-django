@@ -53,9 +53,9 @@ def product_info(request, product_slug):
 @staff_member_required
 def revenue_page(request):
     # lấy các ngày trong bảng doanh thu hàng ngày 
-    revenues = DailyRevenue.objects.all()
+    revenues = DailyRevenue.objects.all().order_by('-date')
 
-    # try catch tính tổng
+    # try except tính tổng
     total = 0
     for r in revenues:
         try:
