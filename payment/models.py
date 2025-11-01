@@ -101,3 +101,17 @@ class OrderItem(models.Model):
     def __str__(self):
 
         return 'Order Item - #' + str(self.id)
+    
+from django.db import models
+
+class DailyRevenue(models.Model):
+    date = models.DateField(unique=True)
+    total_revenue = models.BigIntegerField(default=0)
+
+    class Meta:
+        db_table = 'daily_revenue'  # đảm bảo tên bảng trùng với MySQL trigger/procedure
+        verbose_name = 'Doanh thu ngày'
+        verbose_name_plural = 'Doanh thu theo ngày'
+
+    def __str__(self):
+        return f"{self.date}"
