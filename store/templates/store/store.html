@@ -86,7 +86,10 @@
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                 <p class="price-new">{{ product.price }} VND</p>
                 <div class="card-cta">
-                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                  <button class="buy-btn" type="button">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
+                  </button>
                 </div>
               </div>
             {% endif %}
@@ -117,7 +120,10 @@
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                 <p class="price-new">{{ product.price }} VND</p>
                 <div class="card-cta">
-                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                  <button class="buy-btn" type="button">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
+                  </button>
                 </div>
               </div>
             {% endif %}
@@ -148,7 +154,11 @@
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                 <p class="price-new">{{ product.price }} VND</p>
                 <div class="card-cta">
-                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                  <button class="buy-btn" type="button">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
+                  </button>
+
                 </div>
               </div>
             {% endif %}
