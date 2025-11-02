@@ -53,10 +53,19 @@ class Order(models.Model):
     shipping_address = models.TextField(max_length=10000)
 
 
-    amount_paid = models.DecimalField(max_digits=8, decimal_places=2)
+    amount_paid = models.BigIntegerField()
 
 
 
+
+    shipping_status = models.CharField(
+    max_length=20,
+    choices=[
+        ('Đang xử lý', 'Đang xử lý'),
+        ('Thành công', 'Thành công'),
+    ],
+    default='Đang xử lý'
+)
 
     date_ordered = models.DateTimeField(auto_now_add=True)
 
@@ -85,7 +94,7 @@ class OrderItem(models.Model):
 
     quantity = models.PositiveBigIntegerField(default=1)
 
-    price = models.DecimalField(max_digits=8, decimal_places=2)    
+    price = models.BigIntegerField()    
   
 
 

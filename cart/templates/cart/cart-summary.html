@@ -57,8 +57,8 @@
                     </div>
                     <div style="flex:1">
                       <a href="{{ item.product.get_absolute_url }}" style="font-weight:600;color:#111;text-decoration:none">{{ item.product.title }}</a>
-                      <div style="font-size:13px;color:#6b7280;margin-top:6px">Giá: {{ item.price }} × {{ item.qty }}</div>
-                      <div style="margin-top:6px;font-weight:600">Tổng: {{ item.total }}</div>
+                      <div style="font-size:13px;color:#6b7280;margin-top:6px">Giá: {{ item.price }} VND × {{ item.qty }}</div>
+                      <div style="margin-top:6px;font-weight:600">Tổng: {{ item.total }} VND</div>
                     </div>
     <!-- added wrapper class to apply equal button sizing -->
     <div class="cart-actions-equal" style="display:flex;flex-direction:column;align-items:flex-end;min-width:120px;">
@@ -66,10 +66,11 @@
                     <label for="select{{item.product.id}}" style="margin:0;font-size:13px;">Số lượng</label>
                     <select id="select{{item.product.id}}" style="width:72px;padding:4px;border-radius:4px;">
                       <option value="{{item.qty}}" selected>{{item.qty}}</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
+                        {% for i in numbers %}
+              
+                          <option value="{{i}}">{{i}}</option>
+              
+                        {% endfor %}
                     </select>
                     <button type="button" data-index="{{item.product.id}}" class="btn btn-primary btn-sm update-button" style="padding:4px 8px;font-size:12px;">Update</button>
                   </div>
@@ -94,10 +95,10 @@
             <div class="cart-section-hd">Tóm tắt đơn hàng</div>
             <div class="cart-section-bd">
               <div style="display:flex;flex-direction:column;gap:8px">
-                <div style="display:flex;justify-content:space-between;font-weight:700"><span>Tổng cộng</span><span id="sum-grand">{{ cart.get_total }}</span></div>
+                <div style="display:flex;justify-content:space-between;font-weight:700"><span>Tổng cộng</span><span id="sum-grand">{{ cart.get_total }} VND</span></div>
               </div>
               <button class="cart-btn" style="margin-top:14px">
-                  <a href="{% url 'checkout' %}" style="color:white; text-decoration:none;">Thanh toán</a>
+                  {%if cart.get_total > 0%}<a href="{% url 'checkout' %}" style="color:white; text-decoration:none;">Thanh toán</a>{% else %}<span style="color:white; text-decoration:none;">Hãy thêm sản phẩm vào giỏ hàng!!!</span>{% endif %}
               </button>
             </div>
           </div>
