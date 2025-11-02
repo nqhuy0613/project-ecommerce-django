@@ -153,9 +153,13 @@
   </div>
   <!-- Search -->
   <div class="overlay" id="overlay" data-action="close-search"></div>
+
   <div class="search-box" id="search-box">
-    <input id="search-input" type="text" placeholder="Tìm kiếm sản phẩm...">
+    <form method="get" action="{% url 'search-products' %}">
+        <input id="search-input" type="text" name="q" placeholder="Tìm kiếm sản phẩm...">
+    </form>
   </div>
+
 
   <!-- MAIN -->
   <main id="home" data-view="home">

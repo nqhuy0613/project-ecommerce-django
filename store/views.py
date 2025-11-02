@@ -4,6 +4,8 @@ from . models import Category, Product
 
 from django.shortcuts import get_object_or_404
 
+from django.db import connection
+
 
 def store(request):
 
@@ -41,6 +43,28 @@ def product_info(request, product_slug):
     context = {'product': product}
 
     return render(request, 'store/product-info.html', context)
+
+
+
+def search_products(request):
+    query = request.GET.get('q', '').strip()
+    product = None
+
+    if query:
+        with connection.cursor() as cursor:
+            cursor.callproc('SearchProducts', [query])
+            columns = [col[0] for col in cursor.description]
+            row = cursor.fetchone()
+
+            if row:
+                data = dict(zip(columns, row))
+                product = Product(**data)
+            else:
+                return render(request, 'store/no-product.html', {'query': query})
+    else:
+        return render(request, 'store/no-product.html', {'query': query})
+
+    return render(request, 'store/product-info.html', {'product': product})
 
 
 
