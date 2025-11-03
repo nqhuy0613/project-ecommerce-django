@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +54,24 @@ INSTALLED_APPS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
+JAZZMIN_SETTINGS = {
+
+    "welcome_sign": "Chào mừng bạn đến trang quản trị!",
+    "copyright": "© 2025 Ecommerce Inc.",
+
+    "show_ui_builder": True,          # Bật nút chỉnh màu trực tiếp
+    "topmenu_links": [
+        {"name": "Trang bán hàng", "url": "/", "new_window": True},
+        {"app": "auth"},  # Hiển thị menu con cho app auth
+        {"name": "Trang xem thống kê doanh thu", "url": "revenue-page", },
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": ['payment.DailyRevenue'],
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -68,7 +87,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,16 +104,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Không xóa khi đóng trình duyệt
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce',      # tên database MySQL bạn vừa tạo
+        'USER': 'root',              # username MySQL
+        'PASSWORD': '',       # password MySQL
+        'HOST': 'localhost',         # hoặc IP của server
+        'PORT': '3306',              # cổng mặc định
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
+
 
 
 # Password validation
