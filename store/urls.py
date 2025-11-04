@@ -19,6 +19,10 @@ urlpatterns = [
 
     path('search/<slug:category_slug>/', views.list_category, name='list-category'),
 
-
+    # tìm kiếm
     path('search/', views.search_products, name='search-products'),
+
+    #sắp xếp
+    path('search/<slug:category_slug>/sort/', views.sort_category, name='sort-category'),
+
 ]

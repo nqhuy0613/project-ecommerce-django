@@ -39,9 +39,85 @@
       <div class="pb-3 h5"> {{category.name | capfirst }} </div>
 
 
+
+
+<!-- THANH LỌC SẢN PHẨM -->
+        <div class="sort">
+  <span>Sắp xếp theo: </span>
+    <a href="{% url 'sort-category' category.slug %}?type=bestseller" class="sort-link">Bán chạy</a> ·
+    <a href="{% url 'sort-category' category.slug %}?type=new" class="sort-link">Mới</a> ·
+  <div class="price-sort">
+    <a href="#" id="price">Giá <span id="arrow">▾</span></a>
+    <div id="dropdown" style="display:none;position:absolute;background:#fff;border:1px solid #ccc;">
+        <a href="{% url 'sort-category' category.slug %}?type=asc" class="price-option">Giá thấp - cao</a>
+        <a href="{% url 'sort-category' category.slug %}?type=desc" class="price-option">Giá cao - thấp</a>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.sort-link, #price { color:black; text-decoration:none; cursor:pointer; }
+.sort-link.active, #price.active { color:blue; }
+.price-sort { position:relative; display:inline-block; }
+.price-option { display:block; padding:5px 10px; color:black; text-decoration:none; white-space:nowrap; }
+.price-option:hover { background:#f0f0f0; }
+#arrow { display:inline-block; transition:0.2s; }
+#arrow.up { transform:rotate(180deg); }
+</style>
+
+<script>
+const links = document.querySelectorAll('.sort-link');
+const price = document.getElementById('price');
+const dropdown = document.getElementById('dropdown');
+const arrow = document.getElementById('arrow');
+
+// Click link ngoài dropdown
+links.forEach(l => {
+  l.onclick = e => {
+
+    links.forEach(x => x.classList.remove('active'));
+    price.classList.remove('active');
+    l.classList.add('active');
+    dropdown.style.display = 'none';
+    arrow.classList.remove('up');
+  };
+});
+
+// Click Giá để toggle dropdown
+price.onclick = e => {
+  e.preventDefault();
+  const open = dropdown.style.display === 'block';
+  dropdown.style.display = open ? 'none' : 'block';
+  arrow.classList.toggle('up', !open);
+};
+
+// Chọn giá → Giá xanh, dropdown đóng, mũi tên quay lại
+document.querySelectorAll('.price-option').forEach(o => {
+  o.onclick = e => {
+
+    links.forEach(x => x.classList.remove('active'));
+    price.classList.add('active');
+    dropdown.style.display = 'none';
+    arrow.classList.remove('up');
+  };
+});
+
+// Click ngoài đóng dropdown
+document.addEventListener('click', e => {
+  if (!price.contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.style.display = 'none';
+    arrow.classList.remove('up');
+  }
+});
+</script>
+<!-- HẾT THANH LỌC -->
       <hr>
 
       <br>
+
+
+        <br>
 
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">

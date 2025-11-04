@@ -4,6 +4,10 @@ from django.db import models
 from django.urls import reverse
 
 
+from django.utils import timezone
+
+
+
 class Category(models.Model):
 
     name = models.CharField(max_length=250, db_index=True)
@@ -51,6 +55,8 @@ class Product(models.Model):
     pin = models.CharField(max_length=250, default='Unknown')
 
     image = models.ImageField(upload_to='images/')
+
+    date_added = models.DateTimeField(default=timezone.now)
 
 
     class Meta:

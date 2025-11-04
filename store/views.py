@@ -69,6 +69,28 @@ def search_products(request):
 
 
 
+def sort_category(request, category_slug):
+    sort_type = request.GET.get('type')
+    category = get_object_or_404(Category, slug=category_slug)
+
+    product_ids = []
+
+    if sort_type in ['asc', 'desc', 'new' ,'bestseller']:
+        with connection.cursor() as cursor:
+            cursor.callproc('SortProducts', [category.id, sort_type])
+            rows = cursor.fetchall()
+            product_ids = [row[0] for row in rows]
+    products = Product.objects.filter(id__in=product_ids, category=category)
+    if product_ids:
+        products = sorted(products, key=lambda x: product_ids.index(x.id))
+    return render(request, 'store/list-category.html', {
+        'category': category,
+        'products': products,
+    })
+
+
+
+
 
 
 
