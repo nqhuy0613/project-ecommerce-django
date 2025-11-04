@@ -1,20 +1,18 @@
 {% extends "./base.html" %}
 
 {% load static %}
+{% load humanize %}
 
 
 {% block content %}
 
   <style>
     /* Make product list horizontal and images look better */
-    .product-list {
-      display: flex;
-      /* allow wrapping so cards move to next row when container is full */
-      flex-wrap: wrap;
-      gap: 16px;
-      overflow-x: visible;
-      padding-bottom: 6px;
-    }
+   .product-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
 
     .product-card {
       /* allow cards to shrink/grow; use a preferred base width so multiple cards fit per row
@@ -84,7 +82,7 @@
                   {% endif %}
                 </a>
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-                <p class="price-new">{{ product.price }} VND</p>
+                <p class="price-new">{{ product.price|intcomma }} VND</p>
                 <div class="card-cta">
                   <button class="buy-btn" type="button">
                         <i class="fa-solid fa-cart-shopping"></i>
@@ -118,7 +116,7 @@
                   {% endif %}
                 </a>
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-                <p class="price-new">{{ product.price }} VND</p>
+                <p class="price-new">{{ product.price|intcomma }} VND</p>
                 <div class="card-cta">
                   <button class="buy-btn" type="button">
                         <i class="fa-solid fa-cart-shopping"></i>
@@ -152,7 +150,7 @@
                   {% endif %}
                 </a>
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-                <p class="price-new">{{ product.price }} VND</p>
+                <p class="price-new">{{ product.price|intcomma }} VND</p>
                 <div class="card-cta">
                   <button class="buy-btn" type="button">
                         <i class="fa-solid fa-cart-shopping"></i>
