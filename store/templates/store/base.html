@@ -187,7 +187,97 @@
   </div>
   <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/cart.js' %}"></script>
+  <style>
+#chat-fab{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;
+ box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;background:#0d6efd;color:#fff}
+#chat-panel{position:fixed;right:20px;bottom:90px;width:340px;max-height:60vh;background:#fff;border-radius:16px;
+ box-shadow:0 16px 40px rgba(0,0,0,.2);display:none;flex-direction:column;overflow:hidden;z-index:9999}
+#chat-header{padding:12px 14px;font-weight:600;border-bottom:1px solid #eee}
+#chat-body{padding:12px;overflow:auto;height:320px}
+.msg{margin:8px 0;padding:10px 12px;border-radius:12px;max-width:85%}
+.msg.user{background:#eef5ff;margin-left:auto}
+.msg.bot{background:#f6f6f6}
+#chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid #eee}
+#chat-input input{flex:1;border:1px solid #ddd;border-radius:10px;padding:8px 10px}
+</style>
 
+<div id="chat-fab"><i class="fa-solid fa-message"></i></div>
+<div id="chat-panel">
+  <div id="chat-header">Trợ lý mua sắm</div>
+  <div id="chat-body"></div>
+  <div id="chat-input">
+    <input id="chat-text" type="text" placeholder="Nhập câu hỏi..."/>
+    <button id="chat-send" class="btn btn-primary btn-sm">Gửi</button>
+  </div>
+</div>
+
+<script>
+$(document).on('click', '.add-cart-btn', function(e) {
+    e.preventDefault();
+
+    const productID = $(this).data('id');
+    const qty = $(this).closest('.product-card').find('.quantity-select').val() ?? 1;
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart-add" %}',
+        data: {
+            product_id: productID,
+            product_quantity: qty,
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+            action: 'post'
+        },
+        success: function(json){
+            $("#cart-qty").text(json.qty);
+
+            $("#cart-popup").removeClass("hidden");
+            setTimeout(()=> $("#cart-popup").addClass("hidden"), 1500);
+        },
+        error: function(){
+            alert("Lỗi kết nối tới giỏ hàng");
+        }
+    });
+});
+const fab=document.getElementById('chat-fab');
+const panel=document.getElementById('chat-panel');
+const bodyEl=document.getElementById('chat-body');
+const textEl=document.getElementById('chat-text');
+const sendBtn=document.getElementById('chat-send');
+
+function addMsg(text, who){
+  const d=document.createElement('div');
+  d.className='msg '+who;
+  d.innerText=text;
+  bodyEl.appendChild(d);
+  bodyEl.scrollTop=bodyEl.scrollHeight;
+}
+
+fab.onclick=()=>{ panel.style.display = panel.style.display==='flex' ? 'none' : 'flex'; if(panel.style.display==='flex') textEl.focus(); }
+
+async function send(){
+  const t=textEl.value.trim(); if(!t) return;
+  addMsg(t,'user'); textEl.value='';
+  const loading = 'Đang soạn trả lời...';
+  const ld = setTimeout(()=>addMsg(loading,'bot'), 300);
+  try{
+    const res=await fetch('/api/chat/',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:t})
+    });
+    const data=await res.json();
+    if(ld) clearTimeout(ld);
+    addMsg(data.reply || 'Xin lỗi, có lỗi xảy ra.', 'bot');
+  }catch(e){
+    if(ld) clearTimeout(ld);
+    addMsg('Không thể kết nối máy chủ.', 'bot');
+  }
+}
+
+
+sendBtn.onclick=send;
+textEl.addEventListener('keydown', e=>{ if(e.key==='Enter') send(); });
+</script>
 </body>
 
 </html>

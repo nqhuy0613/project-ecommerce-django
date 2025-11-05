@@ -222,6 +222,12 @@
       margin: 10px 0;
       font-weight: 500;
     }
+      .product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 sản phẩm mỗi hàng */
+    gap: 20px;
+  }
+
 
     .status {
       position: absolute;

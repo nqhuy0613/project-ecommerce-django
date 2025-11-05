@@ -28,6 +28,7 @@ urlpatterns = [
     # Payment app
 
     path('payment/',include('payment.urls')),
+     path('api/', include('assistant.urls')),
 ]
 
 

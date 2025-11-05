@@ -1,172 +1,241 @@
 {% extends "./base.html" %}
-
 {% load static %}
-
+{% load humanize %}
 
 {% block content %}
 
-  <style>
-    /* Make product list horizontal and images look better */
-    .product-list {
-      display: flex;
-      /* allow wrapping so cards move to next row when container is full */
-      flex-wrap: wrap;
-      gap: 16px;
-      overflow-x: visible;
-      padding-bottom: 6px;
-    }
+<style>
+/* ==== GRID LIST PRODUCTS ==== */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
 
-    .product-card {
-      /* allow cards to shrink/grow; use a preferred base width so multiple cards fit per row
-         they'll wrap automatically when there isn't enough space */
-      flex: 1 1 240px;
-      max-width: 240px;
-      margin: 0;
-    }
+/* CARD */
+.product-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #eee;
+  transition: .2s;
+}
 
-    .product-card .thumb-link {
-      display: block;
-      width: 100%;
-      height: 220px;
-      overflow: hidden;
-      border-radius: 10px;
-      background: #fff;
-    }
+.product-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
 
-    .product-card .thumb-link img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform .25s ease;
-    }
+/* IMAGE */
+.thumb-link {
+  display: block;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
 
-    .product-card .thumb-link img:hover {
-      transform: scale(1.04);
-    }
+.thumb-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: .25s;
+}
 
-    /* hide scrollbar on WebKit but keep scrolling functionality */
-    .product-list::-webkit-scrollbar { height: 8px; }
-    .product-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 8px; }
-  </style>
+.thumb-link img:hover {
+  transform: scale(1.04);
+}
 
-  <!-- Carousel -->
-    <div class="carousel" id="home-carousel" data-carousel>
-      <img src="https://samcenter.vn/images/uploaded/banner/2025/banner-s25fe-pc.png" class="active" alt="Banner 1">
-      <img src="https://samcenter.vn/images/uploaded/banner/2025/Th%C3%A1ng%209/Artboard%201.png" alt="Banner 2">
-      <img src="https://samcenter.vn/images/uploaded/banner/2025/Th%C3%A1ng%209/Artboard%201%20copy.png" alt="Banner 3">
+/* STATUS BADGE */
+.status {
+  display: inline-block;
+  background: #e9ffe6;
+  color: #0c7a07;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
 
-      <button class="prev" type="button" data-action="prev-slide">&#10094;</button>
-      <button class="next" type="button" data-action="next-slide">&#10095;</button>
-    </div>
-    
-    <!-- Products: three groups (Samsung Galaxy, Galaxy Watch, Galaxy Tab) -->
+/* TITLE */
+.product-card h3 a {
+  font-size: 15px;
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+}
 
- 
+.product-card h3 a:hover {
+  color: #0d6efd;
+}
 
-    <!-- Section: Samsung Galaxy -->
-    <section class="product-section" id="product-section-galaxy">
-      <div class="section-header">
-        <h2 id="section-title">Samsung Galaxy</h2>
-        <a href="/search/samsung-galaxy">Xem tất cả</a>
-      </div>
-      <div class="product-carousel">
-        <div class="product-list" id="product-list-galaxy">
-          {% for product in my_products %}
-            {% if product.category and product.category.name|lower == 'samsung galaxy' %}
-              <div class="product-card">
-                <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
-                <a class="thumb-link" href="{{ product.get_absolute_url }}">
-                  {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                  {% else %}
-                    <img src="/static/media/images/placeholder.png" alt="{{ product.title }}">
-                  {% endif %}
-                </a>
-                <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-                <p class="price-new">{{ product.price }} VND</p>
-                <div class="card-cta">
-                  <button class="buy-btn" type="button">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
-                  </button>
-                </div>
-              </div>
-            {% endif %}
-          {% endfor %}
+/* PRICE */
+.price-new {
+  color: #000;
+  font-weight: 700;
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+/* CTA BUTTONS */
+.card-cta {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-add, .btn-detail {
+  flex: 1;
+  background: #0d6efd;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-add:hover, .btn-detail:hover {
+  background: #0056d2;
+}
+
+.btn-detail {
+  text-decoration: none;
+}
+
+/* SECTION HEADER */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 25px 4px 12px;
+  font-weight: 600;
+}
+
+.section-header a {
+  color: #0d6efd;
+}
+</style>
+
+<!-- === HERO SLIDER === -->
+<div class="carousel" id="home-carousel" data-carousel>
+  <img src="https://samcenter.vn/images/uploaded/banner/2025/banner-s25fe-pc.png" class="active">
+  <img src="https://samcenter.vn/images/uploaded/banner/2025/Th%C3%A1ng%209/Artboard%201.png">
+  <img src="https://samcenter.vn/images/uploaded/banner/2025/Th%C3%A1ng%209/Artboard%201%20copy.png">
+
+  <button class="prev" type="button" data-action="prev-slide">&#10094;</button>
+  <button class="next" type="button" data-action="next-slide">&#10095;</button>
+</div>
+
+<!-- ==== CATEGORY: SAMSUNG GALAXY ==== -->
+<section class="product-section">
+  <div class="section-header">
+    <h2>Samsung Galaxy</h2>
+    <a href="/search/samsung-galaxy">Xem tất cả</a>
+  </div>
+
+  <div class="product-list">
+    {% for product in my_products %}
+      {% if product.category.name|lower == 'samsung galaxy' %}
+      <div class="product-card">
+        <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
+
+        <a class="thumb-link" href="{{ product.get_absolute_url }}">
+          <img src="{{ product.image.url }}">
+        </a>
+
+        <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+
+        <p class="price-new">{{ product.price|intcomma }} VND</p>
+
+        <div class="card-cta">
+          <button class="btn-add add-cart-btn" data-id="{{ product.id }}">
+            <i class="fa-solid fa-cart-plus"></i> Thêm
+          </button>
+
+          <a class="btn-detail" href="{{ product.get_absolute_url }}">
+            <i class="fa-solid fa-eye"></i>
+          </a>
         </div>
       </div>
-    </section>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
 
-    <!-- Section: Galaxy Watch -->
-    <section class="product-section" id="product-section-watch">
-      <div class="section-header">
-        <h2 id="section-title">Galaxy Watch</h2>
-        <a href="/search/galaxy-watch">Xem tất cả</a>
-      </div>
-      <div class="product-carousel">
-        <div class="product-list" id="product-list-watch">
-          {% for product in my_products %}
-            {% if product.category and product.category.name|lower == 'galaxy watch' %}
-              <div class="product-card">
-                <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
-                <a class="thumb-link" href="{{ product.get_absolute_url }}">
-                  {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                  {% else %}
-                    <img src="/static/media/images/placeholder.png" alt="{{ product.title }}">
-                  {% endif %}
-                </a>
-                <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-                <p class="price-new">{{ product.price }} VND</p>
-                <div class="card-cta">
-                  <button class="buy-btn" type="button">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
-                  </button>
-                </div>
-              </div>
-            {% endif %}
-          {% endfor %}
+<!-- ==== CATEGORY: WATCH ==== -->
+<section class="product-section">
+  <div class="section-header">
+    <h2>Galaxy Watch</h2>
+    <a href="/search/galaxy-watch">Xem tất cả</a>
+  </div>
+
+  <div class="product-list">
+    {% for product in my_products %}
+      {% if product.category.name|lower == 'galaxy watch' %}
+      <div class="product-card">
+        <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
+
+        <a class="thumb-link" href="{{ product.get_absolute_url }}">
+          <img src="{{ product.image.url }}">
+        </a>
+
+        <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+        <p class="price-new">{{ product.price|intcomma }} VND</p>
+
+        <div class="card-cta">
+          <button class="btn-add add-cart-btn" data-id="{{ product.id }}">
+            <i class="fa-solid fa-cart-plus"></i> Thêm
+          </button>
+
+          <a class="btn-detail" href="{{ product.get_absolute_url }}">
+            <i class="fa-solid fa-eye"></i>
+          </a>
         </div>
       </div>
-    </section>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
 
-    <!-- Section: Galaxy Tab -->
-    <section class="product-section" id="product-section-tab">
-      <div class="section-header">
-        <h2 id="section-title">Galaxy Tab</h2>
-        <a href="/search/galaxy-tab">Xem tất cả</a>
-      </div>
-      <div class="product-carousel">
-        <div class="product-list" id="product-list-tab">
-          {% for product in my_products %}
-            {% if product.category and product.category.name|lower == 'galaxy tab' %}
-              <div class="product-card">
-                <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
-                <a class="thumb-link" href="{{ product.get_absolute_url }}">
-                  {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                  {% else %}
-                    <img src="/static/media/images/placeholder.png" alt="{{ product.title }}">
-                  {% endif %}
-                </a>
-                <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-                <p class="price-new">{{ product.price }} VND</p>
-                <div class="card-cta">
-                  <button class="buy-btn" type="button">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
-                  </button>
+<!-- ==== CATEGORY: GALAXY TAB ==== -->
+<section class="product-section">
+  <div class="section-header">
+    <h2>Galaxy Tab</h2>
+    <a href="/search/galaxy-tab">Xem tất cả</a>
+  </div>
 
-                </div>
-              </div>
-            {% endif %}
-          {% endfor %}
+  <div class="product-list">
+    {% for product in my_products %}
+      {% if product.category.name|lower == 'galaxy tab' %}
+      <div class="product-card">
+        <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
+
+        <a class="thumb-link" href="{{ product.get_absolute_url }}">
+          <img src="{{ product.image.url }}">
+        </a>
+
+        <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+        <p class="price-new">{{ product.price|intcomma }} VND</p>
+
+        <div class="card-cta">
+          <button class="btn-add add-cart-btn" data-id="{{ product.id }}">
+            <i class="fa-solid fa-cart-plus"></i> Thêm 
+          </button>
+
+          <a class="btn-detail" href="{{ product.get_absolute_url }}">
+            <i class="fa-solid fa-eye"></i>
+          </a>
         </div>
       </div>
-    </section>
-    
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
     
 
       <!-- Footer -->
