@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django.contrib.humanize',
     'store',
 
     'cart',
@@ -52,6 +53,24 @@ INSTALLED_APPS = [
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+JAZZMIN_SETTINGS = {
+
+    "welcome_sign": "Chào mừng bạn đến trang quản trị!",
+    "copyright": "© 2025 Ecommerce Inc.",
+
+    "show_ui_builder": True,          # Bật nút chỉnh màu trực tiếp
+    "topmenu_links": [
+        {"name": "Trang bán hàng", "url": "/", "new_window": True},
+        {"app": "auth"},  # Hiển thị menu con cho app auth
+        {"name": "Trang xem thống kê doanh thu", "url": "revenue-page", },
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": ['payment.DailyRevenue'],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,7 +87,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,6 +104,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Không xóa khi đóng trình duyệt
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -92,11 +114,14 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'shopdb',
-        'USER': 'root',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': 'ecommerce',      # tên database MySQL bạn vừa tạo
+        'USER': 'root',              # username MySQL
+        'PASSWORD': '',       # password MySQL
+        'HOST': 'localhost',         # hoặc IP của server
+        'PORT': '3306',              # cổng mặc định
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 

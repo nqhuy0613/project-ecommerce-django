@@ -62,7 +62,7 @@
     
     <!-- Products: three groups (Samsung Galaxy, Galaxy Watch, Galaxy Tab) -->
 
-  {% comment %} Helper block for rendering a product section filtered by category name {% endcomment %}
+ 
 
     <!-- Section: Samsung Galaxy -->
     <section class="product-section" id="product-section-galaxy">
@@ -86,7 +86,10 @@
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                 <p class="price-new">{{ product.price }} VND</p>
                 <div class="card-cta">
-                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                  <button class="buy-btn" type="button">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
+                  </button>
                 </div>
               </div>
             {% endif %}
@@ -104,6 +107,7 @@
       <div class="product-carousel">
         <div class="product-list" id="product-list-watch">
           {% for product in my_products %}
+
             {% if product.category and product.category.name|lower == 'galaxy watch' %}
               <div class="product-card">
                 <span class="status"><i class="fa-solid fa-bell"></i> Sẵn Hàng</span>
@@ -117,7 +121,10 @@
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                 <p class="price-new">{{ product.price }} VND</p>
                 <div class="card-cta">
-                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                  <button class="buy-btn" type="button">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
+                  </button>
                 </div>
               </div>
             {% endif %}
@@ -148,7 +155,11 @@
                 <h3><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
                 <p class="price-new">{{ product.price }} VND</p>
                 <div class="card-cta">
-                  <button class="buy-btn" type="button"><i class="fa-solid fa-cart-shopping"></i> Xem chi tiết</button>
+                  <button class="buy-btn" type="button">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_absolute_url }}" style="color: white; text-decoration: none;">Xem chi tiết</a>
+                  </button>
+
                 </div>
               </div>
             {% endif %}

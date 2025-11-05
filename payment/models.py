@@ -101,3 +101,19 @@ class OrderItem(models.Model):
     def __str__(self):
 
         return 'Order Item - #' + str(self.id)
+    
+from django.db import models
+
+class DailyRevenue(models.Model):
+    date = models.DateField(unique=True)
+    total_revenue = models.BigIntegerField(default=0)
+
+    class Meta:
+        db_table = 'daily_revenue'  
+
+
+    def __str__(self):
+        return f"{self.date}"
+    
+
+
