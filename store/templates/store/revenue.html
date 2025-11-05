@@ -1,0 +1,40 @@
+
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h2>Thống kê doanh thu</h2>
+      <div class="mb-3">
+        <strong>Tổng: </strong>
+        <span class="badge bg-primary">{{ total_revenue }}</span>
+      </div>
+
+      {% if revenues and revenues|length > 0 %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Ngày</th>
+              <th class="text-end">Doanh thu</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in revenues %}
+            <tr>
+              <td>{{ row.date }}</td>
+              <td class="text-end">{{ row.total_revenue }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-info">Không có dữ liệu doanh thu để hiển thị.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

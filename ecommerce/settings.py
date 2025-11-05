@@ -114,9 +114,9 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ecommerce',      # tên database MySQL bạn vừa tạo
+        'NAME': 'shopdb',      # tên database MySQL bạn vừa tạo
         'USER': 'root',              # username MySQL
-        'PASSWORD': '',       # password MySQL
+        'PASSWORD': '123',       # password MySQL
         'HOST': 'localhost',         # hoặc IP của server
         'PORT': '3306',              # cổng mặc định
         'OPTIONS': {

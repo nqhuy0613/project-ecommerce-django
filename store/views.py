@@ -6,6 +6,9 @@ from django.shortcuts import get_object_or_404
 
 from django.db import connection
 
+from payment.models import DailyRevenue
+
+from django.contrib.admin.views.decorators import staff_member_required
 
 def store(request):
 
@@ -87,6 +90,52 @@ def sort_category(request, category_slug):
         'category': category,
         'products': products,
     })
+
+def filter_price_category(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+    min_price = int(request.GET.get('min_price', 0))
+    max_price = int(request.GET.get('max_price', 999999999))
+
+    product_ids = []
+
+    with connection.cursor() as cursor:
+        cursor.callproc('sp_filter_products', [category.id, min_price, max_price])
+        rows = cursor.fetchall()
+        product_ids = [row[0] for row in rows]  # giả sử SP trả về id sản phẩm
+
+    products = Product.objects.filter(id__in=product_ids, category=category)
+
+    if product_ids:
+        products = sorted(products, key=lambda x: product_ids.index(x.id))
+    else:
+        return render(request, 'store/no-product.html')
+
+    return render(request, 'store/list-category.html', {
+        'category': category,
+        'products': products,
+    })
+
+
+@staff_member_required
+def revenue_page(request):
+    # lấy các ngày trong bảng doanh thu hàng ngày
+    revenues = DailyRevenue.objects.all().order_by('-date')
+
+    # try except tính tổng
+    total = 0
+    for r in revenues:
+        try:
+            total += r.total_revenue
+        except Exception:
+
+            continue
+    context = admin_site.each_context(request)
+    context.update({
+        'revenues': revenues,
+        'total_revenue': total,
+
+    })
+    return render(request, 'store/revenue.html', context)
 
 
 
